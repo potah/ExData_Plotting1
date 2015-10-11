@@ -1,23 +1,22 @@
 
 
-getInstallPackageFunction <- function() {
-    # get the currently installed package names
-    installedPackages <- installed.packages()[,1]
-
-    # return the closure (over the installed packages variable)
-    function(packageName) {
-        if (!is.element(packageName, installedPackages)) {
-            install.packages(packageName)
-            library(packageName)
-        }
-    }
-}
-
 checkPackages <- function(packageNames) {
     # make sure we remove duplicates
     packageNames <- unique(packageNames)
+    installedPackages <- installed.packages()[,1]
 
-    sapply(packageNames, getInstallPackageFunction())
+    #sapply(packageNames, getInstallPackageFunction())
+    sapply(packageNames,
+           function(pkg) {
+               if (!is.element(pkg, installedPackages)) {
+                   install.packages(pkg)
+               }
+               # use character.only for a character vector
+               require(pkg,
+                       character.only = TRUE,
+                       warn.conflicts = FALSE,
+                       quietly = TRUE)
+           })
 }
 
 
