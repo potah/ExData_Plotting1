@@ -1,6 +1,6 @@
 # using checkPackages, downloadAndExtract, loadData from plot1.R
+# plot1.R has been updated
 source("plot1.R")
-
 createPlot3 <- function() {
     checkPackages(c("dplyr", "lubridate"))
     

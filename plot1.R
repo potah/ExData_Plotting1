@@ -1,4 +1,4 @@
-
+# create our plot1.png
 
 checkPackages <- function(packageNames) {
     # make sure we remove duplicates
@@ -45,11 +45,11 @@ downloadAndExtract <- function() {
 }
 
 loadData <- function(dataFile, startDate, endDate) {
-    data <- tbl_df(read.table(dataFile,
-                              header = TRUE,
-                              sep = ';',
-                              na.strings = '?',
-                              stringsAsFactors = FALSE))
+    data <- as_tibble(read.table(dataFile,
+                                 header = TRUE,
+                                  sep = ';',
+                                  na.strings = '?',
+                                  stringsAsFactors = FALSE))
 
     # check our data frame
     expectedNames = c("Date",
@@ -70,7 +70,9 @@ loadData <- function(dataFile, startDate, endDate) {
 
     # transform the date and time columns then filter on the date range
     data %>%
-        mutate(Date = dmy(Date), Time = hms(Time), DateTime = Date + Time) %>%
+        mutate(Date = dmy(Date), 
+               Time = hms(Time), 
+               DateTime = as.POSIXct(Date + Time)) %>%
         filter(Date >= startDate, Date <= endDate)
         
 }
@@ -98,5 +100,5 @@ createPlot1 <- function() {
     dev.off()
 }
     
-createPlot1()
+#createPlot1()
 
